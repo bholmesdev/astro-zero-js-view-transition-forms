@@ -7,9 +7,10 @@ export const server = {
       username: z.string().refine(s => !takenUsernames.includes(s), 'Username is already taken.'),
     }),
     handler: async (input) => {
-      // Process username and email.
       // Use an artificial timeout.
       await new Promise(res => setTimeout(res, 200));
+
+      takenUsernames.push(input.username);
       return {
         username: input.username,
       }

@@ -1,16 +1,98 @@
 ---
+import { isInputError } from "astro:actions";
+import { actions } from "astro:actions";
 
+const result = Astro.getActionResult(actions.signup);
+
+if (result && !result.error) {
+  return Astro.redirect(`/success?name=${result.data.username}`);
+}
+
+const errors = isInputError(result?.error) ? result.error.fields : {};
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body class="bg-gray-950 text-gray-50">
+    <main class="max-w-xl mx-auto flex flex-col gap-4 mt-12">
+      <h1 class="text-4xl font-bold text-center" transition:name="heading">
+        Welcome to <span class="text-gradient">the future.</span>
+      </h1>
+      <p class="text-center">
+        Use view transitions to handle form submissions, zero JS.
+      </p>
+      <form
+        method="POST"
+        action={actions.signup}
+        class="bg-gray-900 rounded px-6 py-10 border-2 border-gray-800 flex flex-col gap-6"
+      >
+        <label
+          transition:name="username"
+          class="flex flex-col gap-2 text-gray-300"
+        >
+          Username
+          <input
+            required
+            type="text"
+            name="username"
+            transition:name="username-label"
+            class="bg-gray-800 border border-gray-700 rounded px-4 py-2 text-white"
+          />
+        </label>
+        {
+          errors.username && (
+            <p class="text-red-400">{errors.username.join(",")}</p>
+          )
+        }
+
+        <button
+          transition:name="signup-button"
+          class="bg-gradient-to-b from-pink-500 to-pink-600 py-2 rounded font-bold hover:brightness-110 focus:brightness-110 transition-all"
+          >Sign up</button
+        >
+      </form>
+    </main>
+  </body>
 </html>
+
+<style>
+  @view-transition {
+    navigation: auto;
+  }
+
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+    animation: gradient 3s linear infinite;
+  }
+
+  @keyframes gradient {
+    0%,
+    100% {
+      background-position: 0%;
+    }
+    50% {
+      background-position: 25%;
+    }
+  }
+
+  :root {
+    --accent: 136, 58, 234;
+    --accent-light: 224, 204, 250;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      rgb(var(--accent-light)) 60%,
+      white 80%
+    );
+  }
+</style>

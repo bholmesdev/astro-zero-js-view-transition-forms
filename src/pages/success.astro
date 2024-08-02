@@ -1,0 +1,63 @@
+---
+const name = Astro.url.searchParams.get("name") ?? "guest";
+const signupDate = new Date();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Success</title>
+  </head>
+  <body class="bg-gray-950 text-gray-50">
+    <main class="max-w-md mx-auto flex flex-col gap-4 mt-24">
+      <h1
+        class="text-4xl font-bold text-center animate-bounce"
+        transition:name="heading"
+      >
+        You're in! 🎉
+      </h1>
+
+      <article
+        class="flex gap-8 bg-gradient-to-b from-pink-500 to-pink-600 rounded p-4 border-2 border-pink-400"
+      >
+        <!--profile icon -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          class="text-pink-300"
+          ><g fill-rule="evenodd"
+            ><path
+              d="M24 0v24H0V0zM12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036c-.01-.003-.019 0-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"
+            ></path><path
+              fill="currentColor"
+              d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2M8.5 9.5a3.5 3.5 0 1 1 7 0a3.5 3.5 0 0 1-7 0m9.758 7.484A7.985 7.985 0 0 1 12 20a7.985 7.985 0 0 1-6.258-3.016C7.363 15.821 9.575 15 12 15s4.637.821 6.258 1.984"
+            ></path></g
+          ></svg
+        >
+        <div>
+          <h2 class="font-mono" transition:name="username-label">
+            {name}
+          </h2>
+          <p class="text-gray-200">
+            Signed up on <time datetime={signupDate.toISOString()}
+              >{signupDate.toLocaleDateString()}</time
+            >
+          </p>
+        </div>
+      </article>
+      <a href="/" class="text-center">◀ Back to sign up</a>
+    </main>
+  </body>
+</html>
+
+<style>
+  @view-transition {
+    navigation: auto;
+  }
+</style>

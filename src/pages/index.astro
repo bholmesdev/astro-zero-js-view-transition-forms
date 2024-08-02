@@ -1,11 +1,7 @@
 ---
-import { isInputError, actions } from "astro:actions";
+import { actions, isInputError } from "astro:actions";
 
 const result = Astro.getActionResult(actions.signup);
-
-if (result && !result.error) {
-  return Astro.redirect(`/success?name=${result.data.username}`);
-}
 
 const errors = isInputError(result?.error) ? result.error.fields : {};
 ---
@@ -28,7 +24,7 @@ const errors = isInputError(result?.error) ? result.error.fields : {};
       </p>
       <form
         method="POST"
-        action={actions.signup}
+        action={"/success" + actions.signup}
         class="bg-gray-900 rounded px-6 py-10 border-2 border-gray-800 flex flex-col gap-6"
       >
         <label
